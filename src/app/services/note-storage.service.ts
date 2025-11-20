@@ -13,35 +13,63 @@ export class NoteStorageService {
 
   constructor() {}
 
-  // ---- public API ----
+  createNote(payload: {
+    title: string;
+    content: string;
+    pinned?: boolean;
+    color?: Note['color'];
+    image?: string | null;            // ⬅️ make sure image is in the type
 
-  createNote(payload: { title: string; content: string; pinned?: boolean }): Note {
+  }): Note {
     const now = new Date().toISOString();
     const newNote: Note = {
       id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
       title: payload.title || 'Untitled',
       content: payload.content,
       pinned: payload.pinned ?? false,
+      color: payload.color ?? 'default',
       createdAt: now,
       updatedAt: now,
+      image: payload.image ?? null,     // ⬅️ store image here
+
     };
 
-    const updated = [newNote, ...this.notesSubject.value].sort(this.sortByPinnedAndUpdated);
+    const updated = [newNote, ...this.notesSubject.value].sort(
+      this.sortByPinnedAndUpdated,
+    );
     this.persist(updated);
     return newNote;
   }
 
   updateNote(note: Note): Note {
-    const now = new Date().toISOString();
-    const updatedNote: Note = { ...note, updatedAt: now };
+  const now = new Date().toISOString();
+  let updatedNote: Note | null = null;
 
-    const updatedList = this.notesSubject.value
-      .map((n) => (n.id === note.id ? updatedNote : n))
-      .sort(this.sortByPinnedAndUpdated);
+  const updatedList = this.notesSubject.value
+    .map((existing) => {
+      if (existing.id !== note.id) return existing;
 
-    this.persist(updatedList);
-    return updatedNote;
-  }
+      const merged: Note = {
+        ...existing,
+        ...note,
+        updatedAt: now,
+        // keep old image if note.image is undefined
+        image:
+          note.image !== undefined
+            ? note.image
+            : existing.image,
+      };
+
+      updatedNote = merged;
+      return merged;
+    })
+    .sort(this.sortByPinnedAndUpdated);
+
+  this.persist(updatedList);
+  return updatedNote ?? note;
+}
+
+
 
   deleteNote(id: string): void {
     const updated = this.notesSubject.value.filter((n) => n.id !== id);
@@ -63,7 +91,9 @@ export class NoteStorageService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return [];
       const parsed = JSON.parse(raw) as Note[];
-      return Array.isArray(parsed) ? parsed.sort(this.sortByPinnedAndUpdated) : [];
+      return Array.isArray(parsed)
+        ? parsed.sort(this.sortByPinnedAndUpdated)
+        : [];
     } catch (e) {
       console.error('Failed to load notes from localStorage', e);
       return [];

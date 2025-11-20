@@ -1,150 +1,93 @@
-<div class="app-root">
-  <header class="app-header">
-    <div class="brand">
-      <span class="brand-logo">📝</span>
-      <div>
-        <h1>{{ title }}</h1>
-        <p class="subtitle">Angular + localStorage · Offline-ready Notes</p>
-      </div>
+<div class="page">
+  <header class="top-bar">
+    <div class="title-block">
+      <h1>Note.</h1>
     </div>
 
-    <div class="search-wrapper">
-      <input
-        type="text"
-        placeholder="Search by title or content..."
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearchChange()"
-      />
+    <div class="top-actions">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          placeholder="Search by title or content..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        {{ isDark ? "☀️" : "🌙" }}
+      </button>
+
+      <button class="new-note-btn" type="button" (click)="newNote()">
+        <span class="plus">+</span>
+        <span>New Note</span>
+      </button>
     </div>
   </header>
 
-  <main class="app-main">
-    <!-- Notes list -->
-    <section class="notes-list" aria-label="Notes list">
-      <div class="list-header">
-        <h2>Your Notes</h2>
-        <button class="primary" type="button" (click)="newNote()">
-          + New Note
-        </button>
-      </div>
-
-<p
-  class="empty-state"
-  *ngIf="(filteredNotes$ | async)?.length === 0"
->
+  <!-- Notes grid -->
+  <main class="grid-shell">
+    <section class="notes-grid-section" aria-label="Notes board">
+      <p
+        class="empty-state"
+        *ngIf="(filteredNotes$ | async)?.length === 0"
+      >
         No notes yet. Click <strong>New Note</strong> to get started.
       </p>
 
-      <ul class="notes-container">
+      <ul class="notes-grid">
         <li
-  *ngFor="let note of filteredNotes$ | async"
-  class="note-item"
-  [class.active]="isCurrent(note)"
-  (click)="selectNote(note)"
->
+          *ngFor="let note of filteredNotes$ | async"
+          class="note-card"
+          [class.active]="isCurrent(note)"
+          [class.note-yellow]="note.color === 'yellow'"
+          [class.note-blue]="note.color === 'blue'"
+          [class.note-green]="note.color === 'green'"
+          [class.note-default]="!note.color || note.color === 'default'"
+          (click)="selectNote(note)"
+        >
 
-          <div class="note-item-header">
-            <h3 class="note-title">
-              {{ note.title || "Untitled" }}
-            </h3>
-            <button
-              class="icon-btn"
-              type="button"
-              title="Pin / Unpin"
-              (click)="togglePin(note, $event)"
-            >
-              <span [class.pinned]="note.pinned">📌</span>
-            </button>
-          </div>
+          <div class="note-inner">
+            <div class="note-header">
+              <h3 class="note-title">
+                {{ note.title || "Untitled" }}
+              </h3>
 
-          <p class="note-snippet">
-            {{ note.content || "No content yet" }}
-          </p>
+              <button
+                class="pin-btn"
+                type="button"
+                title="Pin / Unpin"
+                (click)="togglePin(note, $event)"
+              >
+                <span [class.pinned]="note.pinned">📌</span>
+              </button>
+            </div>
+            <img *ngIf="note.image" [src]="note.image" class="note-thumb"/>
+            <p class="note-body">
+              {{ note.content || "No content yet" }}
+            </p>
 
-          <div class="note-meta">
-            <span>
-              Updated:
-              {{ note.updatedAt | date : "short" }}
-            </span>
+            <div class="note-footer">
+              <span class="note-date">
+                Updated: {{ note.updatedAt | date : "short" }}
+              </span>
 
-            <button
-              class="danger ghost"
-              type="button"
-              (click)="deleteNote(note.id, $event)"
-            >
-              Delete
-            </button>
+              <button
+                class="delete-btn"
+                type="button"
+                (click)="deleteNote(note.id, $event)"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </li>
       </ul>
     </section>
-
-    <!-- Editor -->
-    <section class="note-editor" aria-label="Note editor">
-      <div class="editor-header">
-        <h2>{{ isEditing ? "Edit Note" : "New Note" }}</h2>
-
-        <button
-          class="secondary"
-          type="button"
-          (click)="currentNote.pinned = !currentNote.pinned"
-        >
-          <span *ngIf="currentNote.pinned">Unpin</span>
-          <span *ngIf="!currentNote.pinned">Pin</span>
-        </button>
-      </div>
-
-      <form (ngSubmit)="saveNote()" autocomplete="off">
-        <label>
-          Title
-          <input
-            type="text"
-            name="title"
-            placeholder="Note title"
-            [(ngModel)]="currentNote.title"
-          />
-        </label>
-
-        <label>
-          Content
-          <textarea
-            name="content"
-            rows="10"
-            placeholder="Write your note here..."
-            [(ngModel)]="currentNote.content"
-          ></textarea>
-        </label>
-
-        <div class="editor-meta" *ngIf="currentNote.id">
-          <span>
-            Created:
-            {{ currentNote.createdAt | date : "short" }}
-          </span>
-          <span>
-            Last updated:
-            {{ currentNote.updatedAt | date : "short" }}
-          </span>
-        </div>
-
-        <div class="editor-actions">
-          <button class="primary" type="submit">
-            {{ currentNote.id ? "Save Changes" : "Create Note" }}
-          </button>
-
-          <button
-            class="ghost"
-            type="button"
-            (click)="newNote()"
-            [disabled]="!currentNote.title && !currentNote.content"
-          >
-            Clear Form
-          </button>
-        </div>
-      </form>
-    </section>
   </main>
-
-  <footer class="app-footer">
-    <span>Built with Angular & localStorage for offline persistence.</span>
-  </footer>
 </div>

@@ -1,0 +1,251 @@
+:host {
+  display: block;
+}
+
+/* Our sticky-note card inside the dialog */
+.dialog-container {
+  box-sizing: border-box;
+  padding: 20px 24px 18px;
+  background: #fff9c2;       /* light mode background */
+  border-radius: 26px;
+  overflow: hidden;          /* <<< add this line */
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 0 auto;
+    /* 👇 add these two lines */
+  transform-origin: center bottom;
+  animation: dialog-pop 260ms cubic-bezier(0.22, 1.25, 0.36, 1) both;
+}
+
+/* Header */
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Label + colors */
+
+.dialog-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dialog-section label {
+  font-weight: 500;
+}
+
+.color-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.color-choice {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #00000044;
+  cursor: pointer;
+}
+
+.color-choice.active {
+  border-color: #000;
+}
+
+.color-default {
+  background: #ffe4e6;
+}
+.color-yellow {
+  background: #fef9c3;
+}
+.color-blue {
+  background: #dbeafe;
+}
+.color-green {
+  background: #dcfce7;
+}
+
+/* Fields */
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  gap: 6px;
+}
+
+input,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Footer buttons */
+
+.dialog-footer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.primary-btn {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.ghost-btn {
+  background: #eee;
+  color: #111;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+/* ===== DARK THEME VARIANT FOR DIALOG (Angular-friendly) ===== */
+
+:host-context(.dark-theme) .dialog-container,
+:host-context(.dark-theme) .dialog-container.color-default,
+:host-context(.dark-theme) .dialog-container.color-yellow,
+:host-context(.dark-theme) .dialog-container.color-blue,
+:host-context(.dark-theme) .dialog-container.color-green {
+  background: #020617;   /* deep navy */
+  border: 1px solid #4b5563;
+  color: #f9fafb;
+}
+
+/* headings + labels */
+:host-context(.dark-theme) .dialog-header h2,
+:host-context(.dark-theme) .dialog-section label,
+:host-context(.dark-theme) label {
+  color: #f9fafb;
+}
+
+/* inputs / textarea on dark */
+:host-context(.dark-theme) input,
+:host-context(.dark-theme) textarea {
+  background: #020617;
+  border-color: #374151;
+  color: #e5e7eb;
+}
+
+:host-context(.dark-theme) input::placeholder,
+:host-context(.dark-theme) textarea::placeholder {
+  color: #6b7280;
+}
+
+/* color circles on dark */
+:host-context(.dark-theme) .color-default { background: #4b5563; }
+:host-context(.dark-theme) .color-yellow  { background: #facc15; }
+:host-context(.dark-theme) .color-blue    { background: #3b82f6; }
+:host-context(.dark-theme) .color-green   { background: #22c55e; }
+
+/* buttons on dark */
+:host-context(.dark-theme) .primary-btn {
+  background: #e5e7eb;
+  color: #020617;
+}
+
+:host-context(.dark-theme) .ghost-btn {
+  background: #111827;
+  color: #e5e7eb;
+}
+@keyframes dialog-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(12px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-4px); /* little overshoot like macOS */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.attach-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.attach-btn {
+  display: inline-block;
+  background: #f4f4f4;
+  border: 1px solid #bbb;
+  padding: 6px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.remove-img-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.image-preview {
+  width: 100%;
+  border-radius: 14px;
+  margin-top: 10px;
+  object-fit: cover;
+  max-height: 250px;
+}
+.editor-toolbar {
+  margin: 4px 0 6px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.bullet-btn {
+  border-radius: 999px;
+  border: 1px solid #d4d4d4;
+  background: #f3f4f6;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.bullet-btn:hover {
+  background: #e5e7eb;
+}
+

@@ -7,7 +7,7 @@ import { Note } from './models/note.model';
 @Component({
   selector: 'app-note-dialog',
   standalone: true,
-  imports: [FormsModule, NgFor, NgClass, NgIf],  // ⬅️ add NgIf here
+  imports: [FormsModule, NgFor, NgClass, NgIf],  
   template: `
         <div
         class="dialog-container"
@@ -38,7 +38,6 @@ import { Note } from './models/note.model';
       <label>
   Content
 
-  <!-- ⭐ Tiny toolbar above the textarea -->
   <div class="editor-toolbar">
     <button
       type="button"
@@ -92,7 +91,6 @@ export class NoteDialogComponent {
     this.dialogRef.close(null);
   }
 
-  // 📎 NEW METHODS
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
@@ -113,42 +111,31 @@ export class NoteDialogComponent {
 
   const start = textarea.selectionStart;
   const end = textarea.selectionEnd;
-
-  // If nothing selected, apply bullets to the current line
   const selStart = start;
   const selEnd = end > start ? end : start;
-
-  // Find full lines that intersect the selection
-  const lineStart = value.lastIndexOf('\n', selStart - 1) + 1; // -1 -> 0
+  const lineStart = value.lastIndexOf('\n', selStart - 1) + 1; 
   const nextNewline = value.indexOf('\n', selEnd);
   const lineEnd = nextNewline === -1 ? value.length : nextNewline;
-
   const before = value.slice(0, lineStart);
   const selection = value.slice(lineStart, lineEnd);
   const after = value.slice(lineEnd);
-
   const lines = selection.split('\n');
-
-  const bulletPrefix = '• '; // you can change to "- " if you prefer
-
-  // Check if ALL lines already have a bullet
+  const bulletPrefix = '• '; 
   const allBulleted = lines.every((line) =>
     line.trimStart().startsWith(bulletPrefix.trim())
   );
 
   const newLines = lines.map((line) => {
   const trimmed = line.trimStart();
-  if (!trimmed) return line; // keep completely empty lines as-is
+  if (!trimmed) return line; 
 
   if (allBulleted) {
-    // REMOVE bullet: assume normalized "• " prefix
     if (trimmed.startsWith(bulletPrefix)) {
       return trimmed.slice(bulletPrefix.length).trimStart();
     }
     return line;
   } else {
-    // ADD bullet with normalized spacing: always "• " at start
-    if (trimmed.startsWith(bulletPrefix)) return line; // already bulleted
+    if (trimmed.startsWith(bulletPrefix)) return line; 
     return bulletPrefix + trimmed;
   }
 });
@@ -156,12 +143,8 @@ export class NoteDialogComponent {
 
   const newSelection = newLines.join('\n');
   const newValue = before + newSelection + after;
-
-  // Update textarea + ngModel
   textarea.value = newValue;
   this.data.content = newValue;
-
-  // Reselect the same lines (optional but nice)
   const newStart = lineStart;
   const newEnd = lineStart + newSelection.length;
   textarea.setSelectionRange(newStart, newEnd);

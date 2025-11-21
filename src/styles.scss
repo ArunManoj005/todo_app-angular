@@ -1,12 +1,8 @@
-/* ========= GLOBAL STYLES ========= */
-
-/* Base body styling */
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* LIGHT THEME (default) */
 body.light-theme {
   background: radial-gradient(
     circle at bottom right,
@@ -17,7 +13,6 @@ body.light-theme {
   color: #111827;
 }
 
-/* DARK THEME */
 body.dark-theme {
   background: radial-gradient(
     circle at top,
@@ -28,7 +23,6 @@ body.dark-theme {
   color: #e5e7eb;
 }
 
-/* Text color inside dialog container per theme (works for all dialogs) */
 body.light-theme .dialog-container {
   color: #111827;
 }
@@ -37,9 +31,6 @@ body.dark-theme .dialog-container {
   color: #e5e7eb;
 }
 
-/* ========= ANGULAR MATERIAL DIALOG OVERRIDE ========= */
-
-/* Make Angular Material dialog shell transparent & rounded */
 .cdk-overlay-pane .mat-mdc-dialog-container {
   background: transparent !important;
   box-shadow: none !important;
@@ -47,7 +38,6 @@ body.dark-theme .dialog-container {
   overflow: visible !important;
 }
 
-/* Inner dialog surface element */
 .cdk-overlay-pane .mat-mdc-dialog-container .mat-mdc-dialog-surface,
 .cdk-overlay-pane .mat-mdc-dialog-container .mdc-dialog__surface {
   background: transparent !important;

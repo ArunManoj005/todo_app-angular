@@ -203,7 +203,6 @@ export class AppComponent implements OnInit {
     this.touchEditor();
   }
 
-
   private touchEditor(): void {
     this.currentNote.updatedAt = new Date().toISOString();
     this.autoSaveSubject.next({ ...this.currentNote });
@@ -216,7 +215,6 @@ export class AppComponent implements OnInit {
     if (!trimmedTitle && !trimmedContent) {
       return;
     }
-
     if (note.id) {
       const updated = this.noteStorage.updateNote({
         ...note,

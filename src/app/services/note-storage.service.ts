@@ -18,7 +18,7 @@ export class NoteStorageService {
     content: string;
     pinned?: boolean;
     color?: Note['color'];
-    image?: string | null;            // ⬅️ make sure image is in the type
+    image?: string | null;           
 
   }): Note {
     const now = new Date().toISOString();
@@ -30,7 +30,7 @@ export class NoteStorageService {
       color: payload.color ?? 'default',
       createdAt: now,
       updatedAt: now,
-      image: payload.image ?? null,     // ⬅️ store image here
+      image: payload.image ?? null,     
 
     };
 
@@ -53,7 +53,6 @@ export class NoteStorageService {
         ...existing,
         ...note,
         updatedAt: now,
-        // keep old image if note.image is undefined
         image:
           note.image !== undefined
             ? note.image
@@ -83,8 +82,6 @@ export class NoteStorageService {
 
     this.persist(updated);
   }
-
-  // ---- internals ----
 
   private loadNotes(): Note[] {
     try {

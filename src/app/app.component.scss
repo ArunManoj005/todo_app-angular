@@ -1,16 +1,12 @@
-/* ======= Sticky Notes "Creative Grid" Design ======= */
-
 :host {
   display: block;
   min-height: 100vh;
 }
 
-/* Page shell */
 
 .page {
   min-height: 100vh;
   padding: 2.5rem 3rem 2rem;
-  /* background now comes from body theme */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: inherit;
 
@@ -18,8 +14,6 @@
   flex-direction: column;
 }
 
-
-/* Top bar */
 
 .top-bar {
   display: flex;
@@ -48,7 +42,6 @@
   gap: 0.75rem;
 }
 
-/* Search input */
 
 .search-wrapper input {
   border-radius: 999px;
@@ -70,7 +63,6 @@
   }
 }
 
-/* Theme toggle */
 
 .theme-toggle {
   border-radius: 999px;
@@ -82,8 +74,6 @@
   color: #fefefe;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.4);
 }
-
-/* "New Note" button */
 
 .new-note-btn {
   display: inline-flex;
@@ -118,7 +108,6 @@
   box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
 }
 
-/* Notes grid area */
 
 .grid-shell {
   flex: 1 1 auto;
@@ -137,7 +126,6 @@
   margin: 1rem 0;
 }
 
-/* Sticky cards grid */
 
 .notes-grid {
   list-style: none;
@@ -170,7 +158,6 @@
     0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
-/* small "tab" at top of note */
 
 .note-tab {
   position: absolute;
@@ -188,8 +175,6 @@
   padding: 1rem 1.3rem 1rem;
 }
 
-/* Color variants */
-
 .note-yellow {
   background: #fef9c3;
 }
@@ -206,7 +191,6 @@
   background: #fee2e2;
 }
 
-/* Note text */
 
 .note-header {
   display: flex;
@@ -266,9 +250,6 @@
 }
 
 
-
-/* Footer */
-
 .page-footer {
   margin-top: 1.5rem;
   text-align: center;
@@ -276,7 +257,6 @@
   color: #6b7280;
 }
 
-/* Responsive tweaks */
 
 @media (max-width: 960px) {
   .page {
@@ -288,16 +268,12 @@
     align-items: flex-start;
   }
 }
-/* ======== DARK THEME OVERRIDES ======== */
 
 body.dark-theme .page {
   background: radial-gradient(circle at top, #020617 0, #020617 40%, #030712 100%);
   color: #e5e7eb;
 }
 
-body.dark-theme .notes-grid-section {
-  /* no extra background, let cards float on dark */
-}
 
 body.dark-theme .note-card {
   background: #020617 !important;
@@ -331,7 +307,6 @@ body.dark-theme .delete-btn {
   box-shadow: 0 4px 10px rgba(185, 28, 28, 0.6);
 }
 
-/* top-bar controls */
 
 body.dark-theme .search-wrapper input {
   background: rgba(15, 23, 42, 0.95);
@@ -347,7 +322,6 @@ body.dark-theme .new-note-btn {
   box-shadow: 0 10px 24px rgba(248, 113, 113, 0.5);
 }
 
-/* footer text */
 body.dark-theme .page-footer {
   color: #9ca3af;
 }

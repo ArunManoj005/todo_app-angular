@@ -2,25 +2,22 @@
   display: block;
 }
 
-/* Our sticky-note card inside the dialog */
 .dialog-container {
   box-sizing: border-box;
   padding: 20px 24px 18px;
-  background: #fff9c2;       /* light mode background */
+  background: #fff9c2;       
   border-radius: 26px;
-  overflow: hidden;          /* <<< add this line */
+  overflow: hidden;         
   width: 100%;
   max-width: 480px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin: 0 auto;
-    /* 👇 add these two lines */
   transform-origin: center bottom;
   animation: dialog-pop 260ms cubic-bezier(0.22, 1.25, 0.36, 1) both;
 }
 
-/* Header */
 
 .dialog-header {
   display: flex;
@@ -39,8 +36,6 @@
   font-size: 20px;
   cursor: pointer;
 }
-
-/* Label + colors */
 
 .dialog-section {
   display: flex;
@@ -82,7 +77,6 @@
   background: #dcfce7;
 }
 
-/* Fields */
 
 label {
   display: flex;
@@ -107,7 +101,6 @@ textarea {
   min-height: 120px;
 }
 
-/* Footer buttons */
 
 .dialog-footer {
   margin-top: 8px;
@@ -134,26 +127,48 @@ textarea {
   cursor: pointer;
 }
 
-/* ===== DARK THEME VARIANT FOR DIALOG (Angular-friendly) ===== */
 
-:host-context(.dark-theme) .dialog-container,
-:host-context(.dark-theme) .dialog-container.color-default,
-:host-context(.dark-theme) .dialog-container.color-yellow,
-:host-context(.dark-theme) .dialog-container.color-blue,
-:host-context(.dark-theme) .dialog-container.color-green {
-  background: #020617;   /* deep navy */
+:host-context(.dark-theme) .dialog-container {
   border: 1px solid #4b5563;
   color: #f9fafb;
 }
 
-/* headings + labels */
+:host-context(.dark-theme) .dialog-container.color-default {
+  background: #ffe4e6;   
+}
+
+:host-context(.dark-theme) .dialog-container.color-yellow {
+  background: #fef9c3;   
+}
+
+:host-context(.dark-theme) .dialog-container.color-blue {
+  background: #dbeafe;  
+}
+
+:host-context(.dark-theme) .dialog-container.color-green {
+  background: #dcfce7;   
+}
+
+
 :host-context(.dark-theme) .dialog-header h2,
 :host-context(.dark-theme) .dialog-section label,
 :host-context(.dark-theme) label {
   color: #f9fafb;
 }
+:host-context(.dark-theme) .attach-btn {
+  background: #0b1220;          
+  border: 1px solid #374151;    
+  color: #e5e7eb;               
+  box-shadow: none;
+}
 
-/* inputs / textarea on dark */
+:host-context(.dark-theme) .attach-btn svg,
+:host-context(.dark-theme) .attach-btn i {
+  vertical-align: middle;
+  margin-right: 6px;
+  font-size: 1rem;
+}
+
 :host-context(.dark-theme) input,
 :host-context(.dark-theme) textarea {
   background: #020617;
@@ -166,13 +181,11 @@ textarea {
   color: #6b7280;
 }
 
-/* color circles on dark */
 :host-context(.dark-theme) .color-default { background: #4b5563; }
 :host-context(.dark-theme) .color-yellow  { background: #facc15; }
 :host-context(.dark-theme) .color-blue    { background: #3b82f6; }
 :host-context(.dark-theme) .color-green   { background: #22c55e; }
 
-/* buttons on dark */
 :host-context(.dark-theme) .primary-btn {
   background: #e5e7eb;
   color: #020617;
@@ -189,7 +202,7 @@ textarea {
   }
   60% {
     opacity: 1;
-    transform: scale(1.03) translateY(-4px); /* little overshoot like macOS */
+    transform: scale(1.03) translateY(-4px); 
   }
   100% {
     opacity: 1;
